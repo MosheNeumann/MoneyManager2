@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="MoneyManager" Class="ContextDBDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=.\sqlexpress;Initial Catalog=MoneyManager;Integrated Security=True" SettingsObjectName="MoneyManager.data.Properties.Settings" SettingsPropertyName="MoneyManagerConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.AccountOwner" Member="AccountOwners">
+    <Type Name="AccountOwner">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="FirstName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="LastName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="PhoneNumber" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="PasswordSalt" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="PasswordHash" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Association Name="AccountOwner_Event" Member="Events" ThisKey="Id" OtherKey="CreatedBy" Type="Event" />
+      <Association Name="AccountOwner_Transaction" Member="Transactions" ThisKey="Id" OtherKey="AccountOwnerId" Type="Transaction" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Contributors" Member="Contributors">
+    <Type Name="Contributor">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="FirstName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="LastName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="PhoneNumber" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="PasswordSalt" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="PasswordHash" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Association Name="Contributor_Transaction" Member="Transactions" ThisKey="Id" OtherKey="ContributerId" Type="Transaction" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Event" Member="Events">
+    <Type Name="Event">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="EventName" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Date" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Event_Transaction" Member="Transactions" ThisKey="Id" OtherKey="EventId" Type="Transaction" />
+      <Association Name="AccountOwner_Event" Member="AccountOwner" ThisKey="CreatedBy" OtherKey="Id" Type="AccountOwner" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Transactions" Member="Transactions">
+    <Type Name="Transaction">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Amount" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="AccountOwnerId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ContributerId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="EventId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="AccountOwner_Transaction" Member="AccountOwner" ThisKey="AccountOwnerId" OtherKey="Id" Type="AccountOwner" IsForeignKey="true" />
+      <Association Name="Contributor_Transaction" Member="Contributor" ThisKey="ContributerId" OtherKey="Id" Type="Contributor" IsForeignKey="true" />
+      <Association Name="Event_Transaction" Member="Event" ThisKey="EventId" OtherKey="Id" Type="Event" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>

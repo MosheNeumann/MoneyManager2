@@ -1,0 +1,43 @@
+﻿@using MoneyManager.data
+@using MoneyManager.web.Controllers
+@model  AccountOwner
+
+@*creates an account owner so that if TempData is not null we can use this variable to populate the fields*@
+@{var accountowner = new AccountOwner(); }
+
+@*Checks TempData*@
+
+@if (TempData["errorMessage"] != null)
+{
+     accountowner = (AccountOwner)TempData["errorMessage"];
+    
+<h3 style="color:red"> Please fill out the form correctly </h3>
+}
+
+<div class="container">
+    <h3 class="text-center">
+        Fill out your information below to register as a new administrator.
+        You will not be able to use an email address that is already in our system.
+    </h3>
+    <div class="col-md-offset-4">
+       
+        <div class="col-md-6">
+           
+            <form action="/Home/Register" method="post" class="well">
+                <input type="text" class="form-control" name="FirstName" placeholder="First Name" value="@accountowner.FirstName" />
+                <br />
+                <input type="text" class="form-control" name="LastName" placeholder="Last Name" value="@accountowner.LastName" />
+                <br />
+                <input type="text" class="form-control" name="Email" placeholder="Email" id="Email" value="@accountowner.Email" />
+                <br />
+                <input type="text" class="form-control" name="Password" placeholder="Password" id="password" />
+                <br />
+                <input type="text" class="form-control" name="PasswordConfirm" placeholder="Confirm Password" id="passwordConfirm" />
+                <br />
+                <input type="text" class="form-control" name="PhoneNumber" placeholder="Phone Number" value="@accountowner.PhoneNumber" />
+                <br />
+                <button class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
